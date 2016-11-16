@@ -1,0 +1,10 @@
+h1.headline{
+    color: white;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.padding-col{
+    padding: 10px;
+    /*margin: 10px;*/
+}

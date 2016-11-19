@@ -9,25 +9,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var proposal_1 = require('./proposal');
+var router_1 = require('@angular/router');
+var Rx_1 = require('rxjs/Rx');
+var proposal_service_1 = require('./proposal.service');
 var ProposalListComponent = (function () {
-    function ProposalListComponent() {
-        this.proposalOne = new proposal_1.Proposal(8, "Best Company", 'http://portfolio.filipeprado.com', 'Ruby on rails', 30, 120, 8, 'cliente1@email.com');
-        this.proposalTwo = new proposal_1.Proposal(2, "Great Company", 'http://portfolio.filipeprado.com', 'Wordpress', 20, 80, 2, 'cliente2@email.com');
-        this.proposalThree = new proposal_1.Proposal(13, "Big Company", 'http://portfolio.filipeprado.com', 'Angular', 21, 20, 13, 'cliente3@email.com');
-        this.proposals = [
-            this.proposalOne,
-            this.proposalTwo,
-            this.proposalThree];
+    function ProposalListComponent(proposalService, router) {
+        this.proposalService = proposalService;
+        this.router = router;
+        this.mode = "Observable";
     }
+    ProposalListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var timer = Rx_1.Observable.timer(0, 5000);
+        timer.subscribe(function () { return _this.getProposals(); });
+    };
+    ProposalListComponent.prototype.getProposals = function () {
+        var _this = this;
+        this.proposalService.getProposals()
+            .subscribe(function (proposals) { return _this.proposals = proposals; }, function (error) { return _this.errorMessage = error; });
+    };
+    ProposalListComponent.prototype.goToShow = function (proposal) {
+        var link = ['/proposal', proposal.id];
+        this.router.navigate(link);
+    };
     ProposalListComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'proposals',
             templateUrl: 'proposal-list.component.html',
             styleUrls: ['proposal-list.component.css'],
+            providers: [proposal_service_1.ProposalService]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [proposal_service_1.ProposalService, router_1.Router])
     ], ProposalListComponent);
     return ProposalListComponent;
 }());

@@ -1,3 +1,6 @@
+.proposal-link{
+    cursor: pointer;
+}
 .proposal-link:hover{
     text-decoration: none;
 }

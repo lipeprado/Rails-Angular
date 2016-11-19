@@ -9,48 +9,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var Rx_1 = require('rxjs/Rx');
+var document_service_1 = require('./document.service');
 var DocumentsComponent = (function () {
-    function DocumentsComponent() {
+    function DocumentsComponent(documentService) {
+        this.documentService = documentService;
         this.pageTitle = "Document Dashboard";
-        this.documents = [
-            {
-                title: "Meu Documento",
-                description: "Testando meu documento",
-                file_url: "http://google.com",
-                update_at: " 11/11/2016",
-                image_url: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTE5Z4fTzfap81AQvlY9mi-vWlbW3KdZg5Pzu-i08_9RcBnF1uW"
-            },
-            {
-                title: "Meu Segundo Documento",
-                description: "Testando meu Segundo documento",
-                file_url: "http://google.com",
-                update_at: " 14/11/2016",
-                image_url: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQyAEJLlEgJf6JhU2IYyf4eIKElsFSLHgRf8D9aL3yETP5MW_nY"
-            },
-            {
-                title: "Meu Terceiro Documento",
-                description: "Testando meu Terceiro documento",
-                file_url: "http://google.com",
-                update_at: " 11/11/2016",
-                image_url: "https://cdn.elegantthemes.com/blog/wp-content/uploads/2014/11/shutterstock_197308901-e1416540010771.jpg"
-            },
-            {
-                title: "Meu Qaurto Documento",
-                description: "Testando meu Quarto documento",
-                file_url: "http://google.com",
-                update_at: " 16/11/2016",
-                image_url: "https://www.roberthalf.com/sites/default/files/Media_Root/images/tcg-images/4-tips-finding-freelance-work.png"
-            }
-        ];
+        this.mode = "Observable";
     }
+    DocumentsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var timer = Rx_1.Observable.timer(0, 5000);
+        timer.subscribe(function () { return _this.getDocuments(); });
+    };
+    DocumentsComponent.prototype.getDocuments = function () {
+        var _this = this;
+        this.documentService.getDocuments()
+            .subscribe(function (documents) { return _this.documents = documents; }, function (error) { return _this.errorMessage = error; });
+    };
     DocumentsComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'documents',
             templateUrl: 'documents.component.html',
-            styleUrls: ['documents.components.css']
+            styleUrls: ['documents.components.css'],
+            providers: [document_service_1.DocumentService],
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [document_service_1.DocumentService])
     ], DocumentsComponent);
     return DocumentsComponent;
 }());

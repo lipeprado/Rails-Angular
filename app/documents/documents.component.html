@@ -1,14 +1,15 @@
 <div class="container">
     <h1 class="headline">{{ pageTitle }}</h1>
 
-    <div class="col-md-6 padding-col" *ngFor="let doc of documents">
+    <div class="col-md-4 padding-col" *ngFor="let doc of documents">
         <div class="card" >
-          <img class="card-img-top" src="{{ doc.image_url }}" alt="" width="100%">
+          <img class="card-img-top img-card" src="{{ doc.image_url }}" alt="" width="100%">
           <div class="card-block">
-            <h4 class="card-title">{{ doc.title }}</h4>
+
+            <h4 class="card-title">{{ doc.title }}</h4><small class="tag tag-primary">{{ doc.updated_at | date }}</small>
             <p class="card-text">{{ doc.description }}</p>
             <a href="{{ doc.file_url }} " class="btn btn-primary"> Download File</a>
-            <small class="card-text">{{ doc.update_at }}</small>
+
         </div>
     </div>
 

@@ -1,49 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 import { Document } from './document';
+import { DocumentService } from './document.service';
 
 @Component({
     moduleId: module.id,
     selector: 'documents',
     templateUrl: 'documents.component.html',
-    styleUrls: ['documents.components.css']
+    styleUrls: ['documents.components.css'],
+    providers: [ DocumentService ],
 })
 
-export class DocumentsComponent {
+export class DocumentsComponent implements OnInit{
     pageTitle: string = "Document Dashboard"
 
-    documents: Document [] = [
-        {
-            title: "Meu Documento",
-            description: "Testando meu documento",
-            file_url: "http://google.com",
-            update_at: " 11/11/2016",
-            image_url: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTE5Z4fTzfap81AQvlY9mi-vWlbW3KdZg5Pzu-i08_9RcBnF1uW"
+    documents: Document [];
+    errorMessage: string;
+    mode = "Observable";
 
-        },
-        {
-            title: "Meu Segundo Documento",
-            description: "Testando meu Segundo documento",
-            file_url: "http://google.com",
-            update_at: " 14/11/2016",
-            image_url: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQyAEJLlEgJf6JhU2IYyf4eIKElsFSLHgRf8D9aL3yETP5MW_nY"
+    constructor(
+        private documentService: DocumentService
+        ) {}
 
-        },
-        {
-            title: "Meu Terceiro Documento",
-            description: "Testando meu Terceiro documento",
-            file_url: "http://google.com",
-            update_at: " 11/11/2016",
-            image_url: "https://cdn.elegantthemes.com/blog/wp-content/uploads/2014/11/shutterstock_197308901-e1416540010771.jpg"
+    ngOnInit(){
+        let timer = Observable.timer(0, 5000);
+        timer.subscribe(() => this.getDocuments());
+    }
 
-        },
-
-        {
-            title: "Meu Qaurto Documento",
-            description: "Testando meu Quarto documento",
-            file_url: "http://google.com",
-            update_at: " 16/11/2016",
-            image_url: "https://www.roberthalf.com/sites/default/files/Media_Root/images/tcg-images/4-tips-finding-freelance-work.png"
-
-        }
-    ]
+    getDocuments(){
+        this.documentService.getDocuments()
+              .subscribe(
+                      documents => this.documents = documents,
+                      error => this.errorMessage = <any>error
+                  );
+    }
 }
